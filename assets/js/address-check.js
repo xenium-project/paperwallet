@@ -9,39 +9,39 @@ var details_container = document.getElementById("address_details");
 
 function checkAddress() {
 
-  notification.innerHTML = '';
-  identicon_widget.innerHTML = '';
-  qr_widget.innerHTML = '';
-  details_container.innerHTML = '';
+	notification.innerHTML = '';
+	identicon_widget.innerHTML = '';
+	qr_widget.innerHTML = '';
+	details_container.innerHTML = '';
 
-  var address = document.getElementById("address").value;
-  var address_info = cnUtil.validate_address(address);
-  
-  if(!address_info.valid) {
-    notification.innerHTML = '<div class="column is-12 notification is-danger has-text-centered">Invalid TRTL address!</div>';
-    return;
-  }
+	var address = document.getElementById("address").value;
+	var address_info = cnUtil.validate_address(address);
 
-  var icon = document.createElement("canvas");
-  icon.width = 256;
-  icon.height = 256;
-  icon.setAttribute("data-jdenticon-value", address);
-  jdenticon.update(icon);
+	if (!address_info.valid) {
+		notification.innerHTML = '<div class="column is-12 notification is-danger has-text-centered">Invalid TRTL address!</div>';
+		return;
+	}
 
-  identicon_widget.appendChild(icon);
+	var icon = document.createElement("canvas");
+	icon.width = 256;
+	icon.height = 256;
+	icon.setAttribute("data-jdenticon-value", address);
+	jdenticon.update(icon);
 
-  var typeNumber = 0;
-  var errorCorrectionLevel = 'L';
+	identicon_widget.appendChild(icon);
 
-  // fix scaling for integrated qr codes
-  var qr_size = address_info.is_integrated ? 5 : 7;
-  
-  var qr = qrcode(typeNumber, errorCorrectionLevel);
-  qr.addData(address);
-  qr.make();
-  qr_widget.innerHTML = qr.createImgTag(qr_size, 0);
+	var typeNumber = 0;
+	var errorCorrectionLevel = 'L';
 
-  // remove some unimportant info
-  delete address_info.noprefix;
-  details_container.innerHTML = JSON.stringify(address_info,null,2);
+	// fix scaling for integrated qr codes
+	var qr_size = address_info.is_integrated ? 5 : 7;
+
+	var qr = qrcode(typeNumber, errorCorrectionLevel);
+	qr.addData(address);
+	qr.make();
+	qr_widget.innerHTML = qr.createImgTag(qr_size, 0);
+
+	// remove some unimportant info
+	delete address_info.noprefix;
+	details_container.innerHTML = JSON.stringify(address_info, null, 2);
 }
